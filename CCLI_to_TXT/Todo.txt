@@ -1,0 +1,8 @@
+﻿TODO
+
+- Aufrufen mit anderen Elementen außer CCLI-Zahlen z.b. Titel oder Ausnahmen
+	- über CCLI-Seite mit search term ist suchen mit umlauten möglich in der URL
+	- ausgabe der ersten drei Ergebnisse, Auswahl durch Eingabe von 1,2 oder 3
+
+Input
+ - Textdatei mit CCLI-Nummern bzw. später vielleicht Liedtitel
