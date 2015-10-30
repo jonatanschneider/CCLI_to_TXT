@@ -6,6 +6,10 @@ namespace CCLI_to_TXT
 {
     class Logfiles
     {
+        /// <summary>
+        /// Print out the log with DateTime.Now and Windows User Domain + Name
+        /// </summary>
+        /// <param name="log">Log to print</param>
         public static void PrintLogs(List<string> log)
         {
             StreamWriter output = new StreamWriter("logfile.logdb", true);

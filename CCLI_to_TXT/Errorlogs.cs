@@ -6,6 +6,10 @@ namespace CCLI_to_TXT
 {
     class Errorlogs
     {
+        /// <summary>
+        /// Print out the log with DateTime.Now and Windows User Domain + Name
+        /// </summary>
+        /// <param name="log">Log to print</param>
         public static void PrintLogs(List<string> log)
         {
             StreamWriter output = new StreamWriter("errorlogs.logdb", true);
@@ -42,10 +46,10 @@ namespace CCLI_to_TXT
             Errorlogs.PrintLogs(log);
         }
 
-        public static void SongNameNotFoundLog(System.Net.WebException e, int ccliNumber)
+        public static void SongnameNotFoundLog(System.Net.WebException e, int ccliNumber)
         {
             List<string> log = new List<string>();
-            log.Add("SongNameNotFoundError");
+            log.Add("SongnameNotFoundError");
             log.Add("Fehlermeldung: " + e.Message);
             log.Add("Der Song \"" + ccliNumber + "\" konnte nicht in der CCLI-Datenbank gefunden werden.");
             log.Add("Fehlerbehebung: CCLI-Nummer überprüfen, ggf. ändern und Programm neustarten");

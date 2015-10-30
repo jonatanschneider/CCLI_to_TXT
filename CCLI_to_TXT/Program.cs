@@ -28,39 +28,48 @@ namespace CCLI_to_TXT
             while ((currentReaderLine = inputReader.ReadLine()) != null)
             {
                 int cclinumber;
-                //Input is a Number
                 if (int.TryParse(currentReaderLine, out cclinumber))
                 {
-                    Song song = new Song(cclinumber);
-
-                    if (song.IsSongNumberAlreadyExisting(linesInOutputFile))
-                    {
-                        Logfiles.SongAlreadyExistsLog(song);
-                    }
-                    else
-                    {
-                        song.AddNewSongByNumber();
-                    }
+                    InputIsAnInteger(cclinumber, linesInOutputFile);
                 }
-                //Input is a String
                 else
                 {
-                    Song song = new Song(currentReaderLine);
-                    song.ChooseCorrectSong();
-                    bool duplicate = song.IsSongNumberAlreadyExisting(linesInOutputFile);
-                    if (duplicate)
-                    {
-                        Logfiles.SongAlreadyExistsLog(song);
-                    }
-                    else
-                    {
-                        song.AddNewSongByName();
-                    }
+                    InputIsAString(currentReaderLine, linesInOutputFile);  
                 }
             }
+
             inputReader.Close();
-            Console.WriteLine("...");
+            Console.WriteLine("Enter drücken zum Beenden");
             Console.ReadLine();
+        }
+
+        private static void InputIsAnInteger(int input, string[] linesInOutputFile)
+        {
+            Song song = new Song(input);
+            bool duplicate = song.IsSongNumberAlreadyExisting(linesInOutputFile);
+            if (duplicate)
+            {
+                Logfiles.SongAlreadyExistsLog(song);
+            }
+            else
+            {
+                song.AddNewSongByNumber();
+            }
+        }
+
+        private static void InputIsAString(string input, string[] linesInOutputFile)
+        {
+            Song song = new Song(input);
+            song.ChooseCorrectSong();
+            bool duplicate = song.IsSongNumberAlreadyExisting(linesInOutputFile);
+            if (duplicate)
+            {
+                Logfiles.SongAlreadyExistsLog(song);
+            }
+            else
+            {
+                song.AddNewSongByName();
+            }
         }
     }
 }

@@ -7,10 +7,18 @@ namespace CCLI_to_TXT
 {
     class Song
     {
+        /// <summary>
+        /// Creates a new Song by providing the Songname
+        /// </summary>
+        /// <param name="name">Songname</param>
         public Song(string name)
         {
             this.name = name;
         }
+        /// <summary>
+        /// Creates a new Song by providing the CCLI-Number
+        /// </summary>
+        /// <param name="ccliNumber">CCLI-Number</param>
         public Song(int ccliNumber)
         {
             this.number = ccliNumber;
@@ -28,12 +36,21 @@ namespace CCLI_to_TXT
         }
 
         //General methods
+        /// <summary>
+        /// Formats the songname so it can be used in URL's
+        /// </summary>
+        /// <returns>Songname with "+" instead of spaces</returns>
         public string MakeNameWebSearchable()
         {
             string name = this.name.Replace(" ", "+");
             return name;
         }
 
+        /// <summary>
+        /// Checks for duplicates in the output file by checking CCLI-Number
+        /// </summary>
+        /// <param name="fileLines">Lines in output file</param>
+        /// <returns>Song is a duplicate</returns>
         public bool IsSongNumberAlreadyExisting(string[] fileLines)
         {
             string ccli = this.number.ToString();
@@ -48,16 +65,22 @@ namespace CCLI_to_TXT
         }
 
         //Methods with number as input
+        /// <summary>
+        /// Calls SetSongname and OutputHandling.NewSong
+        /// </summary>
         public void AddNewSongByNumber()
         {
-            this.GetSongnameByNumber();
+            this.SetSongnameByNumber();
             if (this.name != "Error")
             {
                 OutputHandling.NewSong(this.name, this.number);
             }
         }
 
-        public void GetSongnameByNumber()
+        /// <summary>
+        /// Sets the Songname by calling the needed Methods and Decode the HTML Substring
+        /// </summary>
+        public void SetSongnameByNumber()
         {
             string website = DownloadWebsiteByNumber();
             if (website != "noSongnameError")
@@ -72,6 +95,10 @@ namespace CCLI_to_TXT
             }
         }
 
+        /// <summary>
+        /// Downloads HTML-Text of searchresults by pasting the CCLI-Number into the URL
+        /// </summary>
+        /// <returns>Songname or "noSongnameError" as Songname</returns>
         public string DownloadWebsiteByNumber()
         {
             WebClient webclient = new System.Net.WebClient();
@@ -84,17 +111,23 @@ namespace CCLI_to_TXT
             catch (WebException e)
             {
                 Console.WriteLine("Fehler bei Song {0}. Bitte Error-Logs überprüfen!", this.number);
-                Errorlogs.SongNameNotFoundLog(e, this.number);
+                Errorlogs.SongnameNotFoundLog(e, this.number);
                 string noSongname = "noSongnameError";
                 return noSongname;
             }
         }
 
+        /// <summary>
+        /// Gets the Index of the Songname in the HTML-File
+        /// </summary>
+        /// <param name="website">String with HTML-Source of search results</param>
+        /// <returns>Start Index and length of the Songname</returns>
         public int[] GetSongnamePositionInWebsiteByNumber(string website)
         {
             //Between these two tags is the Songname
             string startTag = "<title>";
             string endTag = "</title>";
+            //Array for start value and length
             int[] startTagAndLength = new int[2];
 
             //Get Position of the songname
@@ -102,14 +135,16 @@ namespace CCLI_to_TXT
             int indexOfEndTag = website.IndexOf(endTag);
             int lengthBetweenTags = indexOfEndTag - indexOfStartTag;
 
-            //Write Values in Output Array
             startTagAndLength[0] = indexOfStartTag;
             startTagAndLength[1] = lengthBetweenTags;
 
             return startTagAndLength;
         }
 
-        //Method with name as input
+        //Methods with name as input
+        /// <summary>
+        /// Calls OutputHandlin.NewSong if Songname is no Error
+        /// </summary>
         public void AddNewSongByName()
         {
             if (this.name != "Error")
@@ -118,6 +153,9 @@ namespace CCLI_to_TXT
             }
         }
 
+        /// <summary>
+        /// Prints out three possible Songs and sets the correct Songname or "Error"
+        /// </summary>
         public void ChooseCorrectSong()
         {
             List<string> songs = this.GetSongnames();
@@ -149,13 +187,17 @@ namespace CCLI_to_TXT
             }
         }
 
+        /// <summary>
+        /// Gets three possible Songs from search results, already HTML Decoded
+        /// </summary>
+        /// <returns>List with three Songnames</returns>
         public List<string> GetSongnames()
         {
             List<string> songnames = new List<string>(2);
 
             string website = this.DownloadWebsiteByName();
             List<int> positions = this.GetSongnamePositionsInWebsite(website);
-            this.GetNumberBySongname(website);
+            this.SetNumberBySongname(website);
 
             for (int i = 0; i < 3; i++)
             {
@@ -172,21 +214,28 @@ namespace CCLI_to_TXT
             return songnames;
         }
 
-        public void GetNumberBySongname(string website)
+        /// <summary>
+        /// Sets the Songnumber for the Songname
+        /// </summary>
+        /// <param name="website">String with HTML-Source of search results</param>
+        public void SetNumberBySongname(string website)
         {
             string startTag = "<div class=\"songTitle\"><a href=\"/songs/";
             string endTag = WebUtility.HtmlEncode(this.name)+ "</a></div>";
 
             //Get Position of the songname
+            int ccliNumberLength = 7;
             int indexOfStartTag = website.IndexOf(startTag) + startTag.Length;
             string tempWebsite = website.Substring(indexOfStartTag);
-            int indexOfEndTag = tempWebsite.IndexOf(endTag) +indexOfStartTag;
-
-            int ccliNumberStandardLength = 7;
-            this.number = Convert.ToInt32(website.Substring(indexOfStartTag, ccliNumberStandardLength));
+            
+            this.number = Convert.ToInt32(website.Substring(indexOfStartTag, ccliNumberLength));
 
         }
 
+        /// <summary>
+        /// Downloads HTML-Text of searchresults by pasting the Songname into the URL
+        /// </summary>
+        /// <returns>Songname or "noSongnameError" as Songname</returns>
         public string DownloadWebsiteByName()
         {
             WebClient webclient = new System.Net.WebClient();
@@ -203,7 +252,12 @@ namespace CCLI_to_TXT
                 return noSongname;
             }
         }
-        //Clean up!
+
+        /// <summary>
+        /// Gets the Index of the Songtitle in the HTML-Source search results
+        /// </summary>
+        /// <param name="website">String with HTML-Source of search results</param>
+        /// <returns>Indexes of Songname and length</returns>
         public List<int> GetSongnamePositionsInWebsite(string website)
         {
             List<int> positions = new List<int>(2);
@@ -222,7 +276,7 @@ namespace CCLI_to_TXT
 
                 //Find Start of the Songtitle
                 Match startIndexMatch = Regex.Match(tempWebsite, endOfStartPattern);
-                //To get the correct Website-Index added the number of the deleted Chars and the Length of the Tag
+                //To get the correct Website-Index: add the number of the deleted Chars and the Length of the Tag
                 int startIndex = startIndexMatch.Index + startIndexMatch.Length + beginofStartPatternIndex;
 
                 //Find end of the Songtitle
@@ -232,6 +286,7 @@ namespace CCLI_to_TXT
                 //Get the length of the Songtitle
                 int lengthBetweenTags = endIndex - startIndex;
 
+                //To get the correct Index of the complete website: add the number previous deleted Chars
                 positions.Add(startIndex + previousEndIndex);
                 positions.Add(lengthBetweenTags);
 
@@ -239,11 +294,10 @@ namespace CCLI_to_TXT
                 tempWebsite = website.Substring(endIndex + endPattern.Length);
                 website = tempWebsite;
 
+                //Save the number of deleted chars
                 previousEndIndex += endIndex + endPattern.Length;
             }
             return positions;
         }
-
-        
     }
 }
