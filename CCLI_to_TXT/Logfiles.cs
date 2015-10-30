@@ -60,30 +60,6 @@ namespace CCLI_to_TXT
             Logfiles.PrintLogs(log);
         }
 
-       /* public static void SkippedSongLog(Song song)
-        {
-            List<string> log = new List<string>();
-            log.Add("SongSkippedLog");
-            log.Add("Song \"" + song.Name + "\" wurde übersprungen");
-            Logfiles.PrintLogs(log);
-        }
-
-        public static void SkippedSongLog(string songname)
-        {
-            List<string> log = new List<string>();
-            log.Add("SongSkippedLog");
-            log.Add("Song \"" + songname + "\" wurde übersprungen");
-            Logfiles.PrintLogs(log);
-        }
-
-        public static void SkippedSongLog(int cclinumber)
-        {
-            List<string> log = new List<string>();
-            log.Add("SongSkippedLog");
-            log.Add("Song \"" + cclinumber + "\" wurde übersprungen");
-            Logfiles.PrintLogs(log);
-        }*/
-
         public static void FileCreatedLog(string filename)
         {
             List<string> log = new List<string>();

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CCLI_to_TXT
 {
@@ -55,11 +52,41 @@ namespace CCLI_to_TXT
             Errorlogs.PrintLogs(log);
         }
 
+        public static void SongNameNotFoundLog(System.Net.WebException e, string songname)
+        {
+            List<string> log = new List<string>();
+            log.Add("SongNameNotFoundError");
+            log.Add("Fehlermeldung: " + e.Message);
+            log.Add("Der Song \"" + songname + "\" konnte nicht in der CCLI-Datenbank gefunden werden.");
+            log.Add("Fehlerbehebung: CCLI-Nummer überprüfen, ggf. ändern und Programm neustarten");
+            Errorlogs.PrintLogs(log);
+        }
+
         public static void FileNotFoundLog(FileNotFoundException e)
         {
             List<string> log = new List<string>();
             log.Add("FileNotFoundError");
             log.Add(e.Message);
+            Errorlogs.PrintLogs(log);
+        }
+
+        public static void InputNotANumberLog(FormatException e)
+        {
+            List<string> log = new List<string>();
+            log.Add("InputNotANumberError");
+            log.Add("Fehlermeldung: " + e.Message);
+            log.Add("Fehler bei der Auswahl des Songs.");
+            log.Add("Fehlerbehebung: Programm mit Song erneut starten, nur 1, 2 oder 3 eingeben.");
+            Errorlogs.PrintLogs(log);
+        }
+
+        public static void InputNoCorrectNumber(ArgumentOutOfRangeException e)
+        {
+            List<string> log = new List<string>();
+            log.Add("InputNoCorrectNumberError");
+            log.Add("Fehlermeldung: " +e.Message);
+            log.Add("Fehler bei der Auswahl des Songs.");
+            log.Add("Fehlerbehebung: Programm mit Song erneut starten, nur 1, 2 oder 3 eingeben.");
             Errorlogs.PrintLogs(log);
         }
     }
