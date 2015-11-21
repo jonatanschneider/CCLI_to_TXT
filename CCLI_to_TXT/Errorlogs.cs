@@ -93,14 +93,5 @@ namespace CCLI_to_TXT
             log.Add("Fehlerbehebung: Programm mit Song erneut starten, nur 1, 2 oder 3 eingeben.");
             Errorlogs.PrintLogs(log);
         }
-
-        public static void SearchBySongnameNotImplementedLog()
-        {
-            List<string> log = new List<string>();
-            log.Add("SearchBySongnameNotImplementedError");
-            log.Add("Fehlermeldung: Diese Funktion wurde noch nicht implementiert!");
-            log.Add("Fehlerbehebung: Bitte nur CCLI-Nummern zum momentanen Zeitpunkt verwenden!");
-            Errorlogs.PrintLogs(log);
-        }
     }
 }

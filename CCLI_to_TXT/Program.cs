@@ -22,7 +22,7 @@ namespace CCLI_to_TXT
                 Environment.Exit(0);
             }
 
-          StreamReader inputReader = new StreamReader(inputFileDirectory);//inputFileDirectory, will be replaced for start arguments
+          StreamReader inputReader = new StreamReader(inputFileDirectory);
             string currentReaderLine;
             string[] linesInOutputFile = new string[0];
             
@@ -48,7 +48,7 @@ namespace CCLI_to_TXT
                 }
                 else
                 {
-                    InputIsAString(currentReaderLine, linesInOutputFile);  
+                    Console.WriteLine("Bitte nur CCLI-Nummern angeben!");
                 }
             }
 
@@ -68,21 +68,6 @@ namespace CCLI_to_TXT
             else
             {
                 song.AddNewSongByNumber();
-            }
-        }
-
-        private static void InputIsAString(string input, string[] linesInOutputFile)
-        {
-            Song song = new Song(input);
-            song.ChooseCorrectSong();
-            bool duplicate = song.IsSongNumberAlreadyExisting(linesInOutputFile);
-            if (duplicate)
-            {
-                Logfiles.SongAlreadyExistsLog(song);
-            }
-            else
-            {
-                song.AddNewSongByName();
             }
         }
     }
