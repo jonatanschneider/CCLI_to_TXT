@@ -7,8 +7,22 @@ namespace CCLI_to_TXT
     {
         static void Main(string[] args)
         {
+            string inputFileDirectory = "";
+            if (args.Length == 1 && args[0].EndsWith(".txt"))
+            {
+                Logfiles.InitializingSuccededLog();
+                inputFileDirectory = args[0];
+            }
+            else
+            {
+                Console.WriteLine("Bitte mit einer .TXT Datei öffnen!");
+                Errorlogs.OpenedWithWrongArgumentsLog(args);
+                Console.WriteLine("Zum Beenden Enter drücken.");
+                Console.ReadLine();
+                Environment.Exit(0);
+            }
 
-            StreamReader inputReader = new StreamReader("CCLI.txt");//inputFileDirectory, will be replaced for start arguments
+          StreamReader inputReader = new StreamReader(inputFileDirectory);//inputFileDirectory, will be replaced for start arguments
             string currentReaderLine;
             string[] linesInOutputFile = new string[0];
             
@@ -73,21 +87,3 @@ namespace CCLI_to_TXT
         }
     }
 }
-
-/* Aufruf des Programms mit .txt Datei
-string inputFileDirectory = "";
-            if (args.Length == 1 && args[0].EndsWith(".txt"))
-            {
-                Logfiles.InitializingSuccededLog();
-                inputFileDirectory = args[0];
-                //For Debugging Puropses:
-                //inputFileDirectory = "CCLI.txt";
-            }
-            else
-            {
-                Console.WriteLine("Bitte mit einer .TXT Datei öffnen!");
-                Errorlogs.OpenedWithWrongArgumentsLog(args);
-                Console.WriteLine("Zum Beenden Enter drücken.");
-                Console.ReadLine();
-                Environment.Exit(0);
-            } */

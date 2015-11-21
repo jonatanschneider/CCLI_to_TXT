@@ -84,13 +84,22 @@ namespace CCLI_to_TXT
             Errorlogs.PrintLogs(log);
         }
 
-        public static void InputNoCorrectNumber(ArgumentOutOfRangeException e)
+        public static void InputNoCorrectNumberLog(ArgumentOutOfRangeException e)
         {
             List<string> log = new List<string>();
             log.Add("InputNoCorrectNumberError");
             log.Add("Fehlermeldung: " +e.Message);
             log.Add("Fehler bei der Auswahl des Songs.");
             log.Add("Fehlerbehebung: Programm mit Song erneut starten, nur 1, 2 oder 3 eingeben.");
+            Errorlogs.PrintLogs(log);
+        }
+
+        public static void SearchBySongnameNotImplementedLog()
+        {
+            List<string> log = new List<string>();
+            log.Add("SearchBySongnameNotImplementedError");
+            log.Add("Fehlermeldung: Diese Funktion wurde noch nicht implementiert!");
+            log.Add("Fehlerbehebung: Bitte nur CCLI-Nummern zum momentanen Zeitpunkt verwenden!");
             Errorlogs.PrintLogs(log);
         }
     }

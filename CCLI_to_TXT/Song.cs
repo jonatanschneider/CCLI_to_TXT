@@ -161,9 +161,13 @@ namespace CCLI_to_TXT
             List<string> songs = this.GetSongnames();
             for (int i = 0; i < 3; i++)
             {
-                Console.Write((i + 1) + " - ");
-                Console.Write(songs[i]);
-                Console.WriteLine();
+                if (songs[i].Length < 50)
+                {
+                    Console.Write((i + 1) + " - ");
+                    Console.Write(songs[i]);
+                    Console.WriteLine();
+                }
+                
             }
             Console.WriteLine("Bitte den gewünschten Song auswählen mit 1,2 oder 3");
             try
@@ -175,7 +179,7 @@ namespace CCLI_to_TXT
             {
                 Console.WriteLine("Fehler! Bitte nur 1,2 oder 3 eingeben!");
                 Console.WriteLine("Song wird übersprungen! - Weitere Informationen im Errorlog");
-                Errorlogs.InputNoCorrectNumber(e);
+                Errorlogs.InputNoCorrectNumberLog(e);
                 this.name = "Error";
             }
             catch (FormatException f)
@@ -202,7 +206,15 @@ namespace CCLI_to_TXT
             for (int i = 0; i < 3; i++)
             {
                 string name = WebUtility.HtmlDecode(website.Substring(positions[0], positions[1]));
-                songnames.Add(name);
+                
+                if(name.Length < 100)
+                {
+                    songnames.Add(name);
+                }
+                else
+                {
+                    songnames.Add("Error");
+                }
 
                 //Remove unncecessary old values
                 int item1 = positions[0];
@@ -227,9 +239,28 @@ namespace CCLI_to_TXT
             int ccliNumberLength = 7;
             int indexOfStartTag = website.IndexOf(startTag) + startTag.Length;
             string tempWebsite = website.Substring(indexOfStartTag);
-            
-            this.number = Convert.ToInt32(website.Substring(indexOfStartTag, ccliNumberLength));
+            try {
+                this.number = Convert.ToInt32(website.Substring(indexOfStartTag, ccliNumberLength));
+            }
+            catch(FormatException)
+            {
+                Console.WriteLine("Das ist bisher noch nicht implementiert! Bitte momentan nur CCLI-Nummern angeben!");
+                Errorlogs.SearchBySongnameNotImplementedLog();
+                /*
+                string tempStartTag = "<h4>CCLI Liednummer</h4>";
+                string startTag2 = "<div>";
+                string endTag2 = "</div>";
 
+                int tempIndexOfStartTag = website.IndexOf(tempStartTag) + tempStartTag.Length;
+                string tempTempWebsite = website.Substring(tempIndexOfStartTag);
+
+                int tempIndexOfStartTag2 = tempTempWebsite.IndexOf(startTag2) + startTag2.Length + tempIndexOfStartTag;
+                string tempWebsite3 = website.Substring(tempIndexOfStartTag2, ccliNumberLength);
+
+                this.number = Convert.ToInt32(tempWebsite3);
+                */
+
+            }
         }
 
         /// <summary>
